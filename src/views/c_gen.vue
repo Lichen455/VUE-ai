@@ -94,6 +94,8 @@
   <script setup>
 //   import dropdown_py from './components/dropdown_py.vue'
   import { reactive } from 'vue';
+  import axios from 'axios';
+
   const emit = defineEmits(['update-display']);
   const display = reactive({
     value: 0,
