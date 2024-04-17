@@ -30,13 +30,13 @@ const router = createRouter({
       name: 'paper_gen',
       component: paper_gen
     },
-    // 组卷页面
+    // C++生成页面
     {
       path: '/c_gen',
       name: 'c_gen',
       component: c_gen 
     },
-    // 组卷页面
+    // python 生成页面
     {
       path: '/py_gen',
       name: 'py_gen',

@@ -84,7 +84,7 @@
       <div class="input-wrapper">
         <textarea v-model="display.questionStem" :placeholder="display.questionStem" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);height:350px;padding:10px;resize:none;" placeholder="题目返回区" class="input-field" />
       </div>
-      <button v-if="!display.questionStem" @click="changeQuestionStem('123')">生成题目</button>
+      <button v-if="!display.questionStem" @click="changeQuestionStem('123'),sendRequest()" >生成题目</button>
       <button v-if="display.questionStem" @click="changeQuestionStem('123')">重新生成</button>
       <button @click="Clearbox(1)" class="button2">清除</button>
       <p class="lsdata">内部数据(便于debug)： {{ display }} {{ props.index }}</p>
@@ -130,6 +130,24 @@
   display.isAIMode = display.isAIMode === 1 ? 0 : 0; // 切换模式
   display.knowledgePoint = 0;
 }
+// 发送axios请求
+const sendRequest = async () => {
+  try {
+    // 这里是你要发送请求的 URL 和其他配置
+    const response = await axios.post('/api/generate-question', {
+      // 发送请求时附带的参数
+      knowledgePoint: display.knowledgePoint,
+      questType: display.questType,
+      isAIMode: display.isAIMode
+    });
+
+    // 处理响应
+    display.questionStem = response.data.questionStem; // 假设响应中包含题目内容
+  } catch (error) {
+    // 处理错误
+    console.error(error);
+  }
+};
 
   </script>
   
