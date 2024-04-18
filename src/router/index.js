@@ -6,6 +6,7 @@ import c_gen from '../views/c_gen.vue'
 import py_gen from '../views/py_gen.vue'
 import page2 from '../components/mainx/page2.vue'
 import ai_quebank from '../views/ai_quebank.vue'
+import test from '../views/test.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,12 @@ const router = createRouter({
       path: '/ai_bank',
       name: 'ai_quebank',
       component: ai_quebank
+    },
+    // 测试页面页面
+    {
+      path: '/test',
+      name: 'test',
+      component: test
     }
   ]
 })

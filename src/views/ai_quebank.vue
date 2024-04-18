@@ -1,5 +1,6 @@
 <template>
   <div class="question-list">
+    <QueBankItem v-for="question in queBank" :key="question.id" :question="question"></QueBankItem>
     <question-item v-for="question in questions" :key="question.id" :question="question"></question-item>
   </div>
 </template>
@@ -7,8 +8,12 @@
 <script setup>
 
 import { ref } from 'vue';
-import QuestionItem from './QuestionItem.vue';
+import QuestionItem from '../components/QuestionItem.vue';
+import QueBankItem from '../components/QueBankItem.vue';
 import { onMounted } from 'vue';
+const queBank = ref([
+{ id: 1, type: '题库总体概览', content: '这是第一个题目，它有一些描述信息。', knowledgePoint: '知识点A' },
+]);
 const questions = ref([
   { id: 1, type: '选择题', content: '这是第一个题目，它有一些描述信息。', knowledgePoint: '知识点A' },
   { id: 2, type: '判断题', content: '这是第二个题目，它也有描述信息。', knowledgePoint: '知识点B' },
