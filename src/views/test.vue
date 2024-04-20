@@ -1,55 +1,56 @@
 <template>
-  <div ref="echartsRef" style="width: 600px; height: 400px;"></div>
+  <div class="pagination">
+    <button @click="prevPage" :disabled="currentPage === 1">上一页</button>
+    <span>第 {{ currentPage }} 页 / 共 {{ totalPages }} 页</span>
+    <button @click="nextPage" :disabled="currentPage === totalPages">下一页</button>
+  </div>
 </template>
 
-<script setup>
-import * as echarts from 'echarts';
-import { onMounted, ref } from 'vue';
-
-const echartsRef = ref(null);
-
-const option = {
-  title: {
-    text: 'Referer of a Website',
-    subtext: 'Fake Data',
-    left: 'center'
+<script>
+export default {
+  name: 'Pagination',
+  props: {
+    // 总页数
+    totalPages: {
+      type: Number,
+      required: true
+    }
   },
-  tooltip: {
-    trigger: 'item'
+  data() {
+    return {
+      // 当前页
+      currentPage: 1
+    }
   },
-  legend: {
-    orient: 'vertical',
-    left: 'left'
-  },
-  series: [
-    {
-      name: 'Access From',
-      type: 'pie',
-      radius: '50%',
-      data: [
-        { value: 1048, name: 'Search Engine' },
-        { value: 735, name: 'Direct' },
-        { value: 580, name: 'Email' },
-        { value: 484, name: 'Union Ads' },
-        { value: 300, name: 'Video Ads' }
-      ],
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
+  methods: {
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.$emit('page-changed', this.currentPage);
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.$emit('page-changed', this.currentPage);
       }
     }
-  ]
-};
-
-onMounted(() => {
-  var myChart = echarts.init(echartsRef.value);
-  myChart.setOption(option);
-});
+  },
+  watch: {
+    totalPages(newValue) {
+      if (this.currentPage > newValue) {
+        this.currentPage = newValue;
+      }
+    }
+  }
+}
 </script>
 
 <style>
-/* 添加一些样式，如果需要的话 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
 </style>
