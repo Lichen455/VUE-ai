@@ -88,6 +88,7 @@ const nextPage = () => {
 };
 
 
+
 // ECharts 的配置项
 const option = {
   title: {
@@ -146,23 +147,75 @@ const barOption = {
 };
 // 监听 isExpanded 的变化
 
-watch(isExpanded, (newValue) => {
+// 监听 isExpanded 的变化
+watch(isExpanded, async (newValue) => {
   if (newValue) {
-    nextTick(() => {
-      if (!pieChart && pieChartRef.value) {
-        pieChart = echarts.init(pieChartRef.value);
-        pieChart.setOption(option); // 使用正确的选项名称
-      }
-      if (!barChart && barChartRef.value) {
-        barChart = echarts.init(barChartRef.value);
-        barChart.setOption(barOption); // 使用正确的选项名称
-      }
-    });
+    try {
+      // 发送 axios 请求获取图表数据
+      const response = await axios.post('/api/charts/data');
+      // 假设响应体的数据结构如下：
+      // {
+      //   pieTitle: { ... },
+      //   pieTooltip: { ... },
+      //   pieLegend: { ... },
+      //   pieSeries: [
+      //     {
+      //       name: 'Access From',
+      //       type: 'pie',
+      //       radius: '50%',
+      //       data: [ ... ]
+      //     }
+      //   ],
+      //   barXAxis: { ... },
+      //   barYAxis: { ... },
+      //   barSeries: [ ... ]
+      // }
+      const chartData = response.data;
+
+      // 使用从后端获取的数据更新 option
+      option.title = chartData.pieTitle;
+      option.tooltip = chartData.pieTooltip;
+      option.legend = chartData.pieLegend;
+      option.series = chartData.pieSeries;
+
+      barOption.xAxis = chartData.barXAxis;
+      barOption.yAxis = chartData.barYAxis;
+      barOption.series = chartData.barSeries;
+
+      nextTick(() => {
+        if (!pieChart && pieChartRef.value) {
+          pieChart = echarts.init(pieChartRef.value);
+          pieChart.setOption(option);
+        }
+
+        if (!barChart && barChartRef.value) {
+          barChart = echarts.init(barChartRef.value);
+          barChart.setOption(barOption);
+        }
+      });
+    } catch (error) {
+      // 如果请求失败，使用默认值
+      console.error('Error fetching chart data:', error);
+
+      // 确保使用默认的 option 配置
+      nextTick(() => {
+        if (!pieChart && pieChartRef.value) {
+          pieChart = echarts.init(pieChartRef.value);
+          pieChart.setOption(option);
+        }
+
+        if (!barChart && barChartRef.value) {
+          barChart = echarts.init(barChartRef.value);
+          barChart.setOption(barOption);
+        }
+      });
+    }
   } else {
     if (pieChart) {
       pieChart.dispose();
       pieChart = null;
     }
+
     if (barChart) {
       barChart.dispose();
       barChart = null;
@@ -170,7 +223,6 @@ watch(isExpanded, (newValue) => {
   }
 });
 
-// ... 其他代码保持不变 ...
 
 
 </script>

@@ -135,21 +135,21 @@
 
 // 发送axios请求
 const sendRequest = async () => {
-  try {
-    // 这里是你要发送请求的 URL 和其他配置
-    const response = await axios.post('/api/generate-c-question', {
-      // 发送请求时附带的参数
-      knowledgePoint: display.knowledgePoint,
-      questType: display.questType,
-      isAIMode: display.isAIMode
-    });
+try {
+  // 这里是你要发送请求的 URL 和其他配置
+  const response = await axios.post('/api/generate-c-question', {
+    // 发送请求时附带的参数
+    knowledgePoint: display.knowledgePoint,
+    questType: display.questType,
+    isAIMode: display.isAIMode
+  });
 
-    // 处理响应
-    display.questionStem = response.data.questionStem; // 假设响应中包含题目内容
-  } catch (error) {
-    // 处理错误
-    console.error(error);
-  }
+  // 处理响应
+  display.questionStem = response.data.questionStem; // 假设响应中包含题目内容
+} catch (error) {
+  // 处理错误
+  console.error(error);
+}
 };
 
   </script>

@@ -85,7 +85,7 @@
       <button v-if="!display.questionStem" @click="changeQuestionStem('生成中...'),sendRequest()">生成题目</button>
       <button v-if="display.questionStem" @click="changeQuestionStem('生成中'),sendRequest()">重新生成</button>
       <button @click="Clearbox(1)" class="button2">清除</button>
-      <p class="lsdata">内部数据(便于debug)： {{ display }} {{ props.index }}</p>
+      <!-- <p class="lsdata">内部数据(便于debug)： {{ display }} {{ props.index }}</p> -->
     </div>
     
   </template>
